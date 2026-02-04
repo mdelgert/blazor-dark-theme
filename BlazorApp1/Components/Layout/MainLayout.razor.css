@@ -9,16 +9,25 @@ main {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-color: var(--bs-secondary-bg);
+}
+
+[data-bs-theme="dark"] .sidebar {
+    background-color: #212529;
 }
 
 .top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
+    /*background-color: var(--bs-light-bg-subtle);*/
+    border-bottom: 1px solid var(--bs-border-color);
     justify-content: flex-end;
     height: 3.5rem;
     display: flex;
     align-items: center;
+}
+
+[data-bs-theme="dark"] .top-row {
+    /*background-color: var(--bs-dark-bg-subtle);*/
+    border-bottom: 1px solid var(--bs-border-color);
 }
 
     .top-row ::deep a, .top-row ::deep .btn-link {
@@ -77,7 +86,6 @@ main {
 }
 
 #blazor-error-ui {
-    color-scheme: light only;
     background: lightyellow;
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
@@ -88,6 +96,12 @@ main {
     position: fixed;
     width: 100%;
     z-index: 1000;
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] #blazor-error-ui {
+    background: #332200;
+    box-shadow: 0 -1px 2px rgba(255, 255, 255, 0.2);
 }
 
     #blazor-error-ui .dismiss {
