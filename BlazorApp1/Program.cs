@@ -1,28 +1,33 @@
-using BlazorApp1.Components;
+﻿using BlazorApp1.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
+// ✅ Microsoft’s recommended approach for Blazor Web App 404 handling
+app.UseStatusCodePagesWithReExecute("/not-found");
+
 app.UseHttpsRedirection();
 
+// If you later add auth, these go here:
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 app.UseAntiforgery();
 
-app.MapStaticAssets();
+app.MapStaticAssets();     // maps build-produced assets as endpoints
+// app.UseStaticFiles();   // optional: only needed for “plain wwwroot” serving scenarios
+
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+   .AddInteractiveServerRenderMode();
 
 app.Run();

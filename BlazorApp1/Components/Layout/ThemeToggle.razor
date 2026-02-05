@@ -1,0 +1,31 @@
+@* 
+Add @rendermode directive to Routes.razor
+*@
+
+@inject IJSRuntime JS
+
+<button type="button"
+        class="btn btn-outline-secondary"
+        title="Toggle theme"
+        @onclick="Toggle">
+    @Label
+</button>
+
+@code {
+    private string? _theme; // "light" | "dark"
+    private string Label => _theme == "dark" ? "☀️" : "🌙";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        // Theme is already applied by bsTheme.init() in <head>.
+        _theme = await JS.InvokeAsync<string>("bsTheme.get");
+        StateHasChanged();
+    }
+
+    private async Task Toggle()
+    {
+        _theme = await JS.InvokeAsync<string>("bsTheme.toggle");
+    }
+}
