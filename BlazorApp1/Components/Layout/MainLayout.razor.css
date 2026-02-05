@@ -1,53 +1,66 @@
-/* MainLayout.razor.css */
+/* MainLayout.razor.css ThemeToggle*/
 
 .page {
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 main {
     flex: 1;
+    min-width: 0; /* prevents overflow when content is wide */
 }
 
+/* Sidebar: use Bootstrap surfaces so it looks right in light/dark */
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    background-color: var(--bs-body-bg);
+    /* border-bottom: 1px solid var(--bs-border-color); */
 }
 
+/* Top row: theme-aware surface + border */
 .top-row {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
+    background-color: var(--bs-body-bg);
+    
     justify-content: flex-end;
     height: 3.5rem;
     display: flex;
     align-items: center;
+    /* border-bottom: 1px solid var(--bs-border-color); */
 }
 
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
-        text-decoration: none;
-    }
+/* Links/buttons in top row */
+.top-row ::deep a,
+.top-row ::deep .btn-link {
+    color: var(--bs-body-color);
+    white-space: nowrap;
+    margin-left: 1.5rem;
+    text-decoration: none;
+}
 
-    .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
-        text-decoration: underline;
-    }
+.top-row ::deep a:hover,
+.top-row ::deep .btn-link:hover {
+    text-decoration: underline;
+}
 
-    .top-row ::deep a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.top-row ::deep a:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+/* Mobile */
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;
     }
 
-    .top-row ::deep a, .top-row ::deep .btn-link {
+    .top-row ::deep a,
+    .top-row ::deep .btn-link {
         margin-left: 0;
     }
 }
 
+/* Desktop layout */
 @media (min-width: 641px) {
     .page {
         flex-direction: row;
@@ -58,12 +71,16 @@ main {
         height: 100vh;
         position: sticky;
         top: 0;
+
+        /* looks nicer + matches bootstrap */
+        border-bottom: none;
+        /* border-right: 1px solid var(--bs-border-color); */
     }
 
     .top-row {
         position: sticky;
         top: 0;
-        z-index: 1;
+        z-index: 10; /* above sidebar content */
     }
 
     .top-row.auth ::deep a:first-child {
@@ -78,9 +95,15 @@ main {
     }
 }
 
+/* Error bar: make it not clash with dark mode */
 #blazor-error-ui {
-    color-scheme: light only;
-    background: lightyellow;
+    /* Let the browser theme form controls appropriately */
+    color-scheme: light dark;
+
+    background-color: var(--bs-warning-bg-subtle);
+    color: var(--bs-warning-text);
+    border-top: 1px solid var(--bs-border-color);
+
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
@@ -92,9 +115,14 @@ main {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
