@@ -1,0 +1,18 @@
+.theme-icon {
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    opacity: 0.75;
+}
+
+button:hover .theme-icon {
+    transform: rotate(20deg);
+    opacity: 1;
+}
+
+button {
+    color: var(--bs-body-color);
+    line-height: 1;
+}
+
+button:hover {
+    color: var(--bs-primary);
+}
