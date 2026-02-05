@@ -1,0 +1,40 @@
+﻿@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+<button type="button"
+        class="btn btn-outline-secondary"
+        title="Toggle theme"
+        @onclick="Toggle">
+    @(_theme == "dark" ? "☀️" : "🌙")
+</button>
+
+@code {
+    private IJSObjectReference? _themeModule;
+    private string _theme = "light";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        _themeModule = await JS.InvokeAsync<IJSObjectReference>("import", "./js/bs-theme.mjs");
+        _theme = await _themeModule.InvokeAsync<string>("get");
+
+        StateHasChanged();
+    }
+
+    private async Task Toggle()
+    {
+        if (_themeModule is null) return;
+
+        _theme = await _themeModule.InvokeAsync<string>("toggle");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_themeModule is not null)
+        {
+            try { await _themeModule.DisposeAsync(); } catch { }
+        }
+    }
+}
+
