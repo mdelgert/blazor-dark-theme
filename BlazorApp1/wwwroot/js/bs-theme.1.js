@@ -1,3 +1,5 @@
+//Does not work on page navigation, only on button click. 
+
 (function () {
   const storageKey = "bs-theme";
 

@@ -1,3 +1,5 @@
+//Non ESM version of bs-theme.js, for better compatibility with Blazor.
+
 (function () {
     const storageKey = "bs-theme";
 
