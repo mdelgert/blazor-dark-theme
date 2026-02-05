@@ -3,29 +3,41 @@ Add @rendermode directive to Routes.razor
 *@
 
 @inject IJSRuntime JS
+@implements IAsyncDisposable
 
-<button type="button"
-        class="btn btn-outline-secondary"
-        title="Toggle theme"
-        @onclick="Toggle">
-    @Label
+<button type="button" class="btn btn-outline-secondary" @onclick="Toggle">
+    @(_theme == "dark" ? "☀️" : "🌙")
 </button>
 
 @code {
-    private string? _theme; // "light" | "dark"
-    private string Label => _theme == "dark" ? "☀️" : "🌙";
+    private IJSObjectReference? _themeModule;
+    private string _theme = "light";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
 
-        // Theme is already applied by bsTheme.init() in <head>.
-        _theme = await JS.InvokeAsync<string>("bsTheme.get");
+        // Import the module (import map will resolve to the hashed file)
+        _themeModule = await JS.InvokeAsync<IJSObjectReference>("import", "./js/bs-theme.mjs");
+
+        // Call the exported function on the module object
+        _theme = await _themeModule.InvokeAsync<string>("get");
+
         StateHasChanged();
     }
 
     private async Task Toggle()
     {
-        _theme = await JS.InvokeAsync<string>("bsTheme.toggle");
+        if (_themeModule is null) return;
+
+        _theme = await _themeModule.InvokeAsync<string>("toggle");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_themeModule is not null)
+        {
+            try { await _themeModule.DisposeAsync(); } catch { }
+        }
     }
 }
