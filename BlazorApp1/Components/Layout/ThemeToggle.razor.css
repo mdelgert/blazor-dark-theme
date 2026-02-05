@@ -1,0 +1,24 @@
+.theme-icon {
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    opacity: 0.75;
+}
+
+button:hover:not(:disabled) .theme-icon {
+    transform: rotate(20deg);
+    opacity: 1;
+}
+
+button {
+    color: var(--bs-body-color);
+    line-height: 1;
+    transition: opacity 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    color: var(--bs-primary);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
