@@ -22,13 +22,21 @@ Add the JavaScript theme module to `wwwroot/js/bs-theme.mjs`:
 
 ### 2. Update `Components/App.razor`
 
-Add the following script tag to include the theme module:
+Add the theme module script tag in the `<head>` section, after `<ImportMap />` and before the CSS links:
 
 ```razor
-<script type="module" src="js/bs-theme.mjs"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ImportMap />
+    <script type="module" src="js/bs-theme.mjs"></script>
+    <link rel="stylesheet" href="@Assets["lib/bootstrap/dist/css/bootstrap.min.css"]" />
+    <!-- ... other links ... -->
+</head>
 ```
 
-This should be added in the `<head>` section or before the closing `</body>` tag.
+**Important**: Place this script early in the `<head>` to prevent flash of incorrect theme (FOIT). The module auto-initializes and applies the saved theme immediately upon load.
 
 ### 3. Update `Components/Routes.razor`
 
